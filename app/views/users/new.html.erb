@@ -1,0 +1,74 @@
+<h1>TOEIC Study Planner</h1>
+
+<div class="form-container">
+  <%= form_with(model: @user, local: true) do |f| %>
+    <div class="form-group">
+      <%= f.label :current_score, "Current TOEIC Score" %>
+      <%= f.number_field :current_score, class: "form-control", min: 0, max: 990, required: true %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :target_score, "Target TOEIC Score" %>
+      <%= f.number_field :target_score, class: "form-control", min: 0, max: 990, required: true %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :study_hours, "Available Study Hours per Day" %>
+      <%= f.number_field :study_hours, class: "form-control", step: 0.5, min: 0.5, required: true %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :target_date, "Target Achievement Date" %>
+      <%= f.date_field :target_date, class: "form-control", min: Date.today, required: true %>
+    </div>
+
+    <%= f.submit "Generate Study Plan", class: "btn btn-primary" %>
+  <% end %>
+</div>
+
+<% content_for :head do %>
+  <style>
+    .form-container {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+
+    .btn-primary {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+  </style>
+<% end %>

@@ -1,0 +1,137 @@
+<div class="tasks-container">
+  <h1>Your TOEIC Study Plan</h1>
+
+  <div class="user-info">
+    <h2>Study Goals</h2>
+    <p>Current Score: <%= @user.current_score %></p>
+    <p>Target Score: <%= @user.target_score %></p>
+    <p>Daily Study Hours: <%= @user.study_hours %></p>
+    <p>Target Date: <%= @user.target_date.strftime("%B %d, %Y") %></p>
+  </div>
+
+  <% if @tasks.empty? %>
+    <div class="generate-plan">
+      <p>No study plan generated yet.</p>
+      <%= button_to "Generate Study Plan", user_study_tasks_path(@user), method: :post, class: "btn btn-primary" %>
+    </div>
+  <% else %>
+    <div class="tasks-list">
+      <% @tasks.each do |task| %>
+        <div class="task-card <%= task.completed ? 'completed' : '' %>">
+          <div class="task-header">
+            <h3><%= task.title %></h3>
+            <%= form_with(model: [@user, task], local: true, class: "task-form") do |f| %>
+              <%= f.check_box :completed, onchange: 'this.form.submit()', class: "task-checkbox" %>
+            <% end %>
+          </div>
+          <p class="task-description"><%= task.description %></p>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="regenerate-plan">
+      <%= button_to "Regenerate Study Plan", user_study_tasks_path(@user), method: :post, class: "btn btn-secondary" %>
+    </div>
+  <% end %>
+</div>
+
+<% content_for :head do %>
+  <style>
+    .tasks-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 2rem;
+    }
+
+    .user-info {
+      background-color: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-info h2 {
+      margin-top: 0;
+      color: #444;
+    }
+
+    .task-card {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s;
+    }
+
+    .task-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .task-card.completed {
+      background-color: #e8f5e9;
+    }
+
+    .task-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .task-header h3 {
+      margin: 0;
+      color: #333;
+    }
+
+    .task-description {
+      color: #666;
+      margin: 0;
+    }
+
+    .task-checkbox {
+      width: 20px;
+      height: 20px;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+      margin-top: 2rem;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .generate-plan {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .task-form {
+      margin: 0;
+    }
+  </style>
+<% end %>
